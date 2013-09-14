@@ -7,7 +7,6 @@ import (
 	"crypto/sha1"
 	"errors"
 	"fmt"
-	"github.com/knieriem/markdown"
 	"github.com/kr/binarydist"
 	"github.com/kr/s3"
 	tag "github.com/landr0id/go-taglib"
@@ -29,29 +28,6 @@ type Id3 struct {
 }
 
 const bucketUrl string = "https://s3.amazonaws.com/songdiff"
-
-// GET /id3/
-func (c Id3) Index() revel.Result {
-	SetActiveItem("")
-	return c.Render()
-}
-
-// GET /id3/about/
-func (c Id3) About() revel.Result {
-	SetActiveItem("")
-	file, err := os.Open(path.Join(revel.BasePath, "app/views/Id3/about.md"))
-	if err != nil {
-		return c.RenderError(err)
-	}
-	defer file.Close()
-	parser := markdown.NewParser(nil)
-	var buf bytes.Buffer
-	fHTML := markdown.ToHTML(&buf)
-	parser.Markdown(file, fHTML)
-
-	markdownData := string(buf.Bytes())
-	return c.Render(markdownData)
-}
 
 // Fixes the ID3 tag info for a remote audio file
 // GET /id3/fix
